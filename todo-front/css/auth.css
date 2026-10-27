@@ -1,0 +1,17 @@
+.validation-error {
+    color: #b91c1c;
+    font-size: 0.875rem;
+    margin: 0.25rem 0 1rem;
+}
+
+.validation-error:empty {
+    display: none;
+}
+
+.form-field {
+    margin-bottom: 1rem;
+}
+
+input[aria-invalid="true"] {
+    border: 2px solid #b91c1c;
+}

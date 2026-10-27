@@ -1,0 +1,207 @@
+﻿<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo App</title>
+    <link rel="stylesheet" href="../css/todo.css" />
+  </head>
+  <body>
+    <main>
+      <header class="page-header">
+        <div>
+          <h1>Todo App</h1>
+          <p>Quản lý các công việc của bạn.</p>
+        </div>
+        <nav>
+          <a href="./login.html">Đăng nhập</a> ·
+          <a href="./register.html">Đăng ký</a>
+        </nav>
+      </header>
+
+      <div class="toolbar" aria-label="Thêm dữ liệu">
+        <button
+          type="button"
+          data-modal-target="category-modal"
+          aria-haspopup="dialog"
+          aria-controls="category-modal"
+        >
+          + Tạo category
+        </button>
+        <button
+          type="button"
+          class="primary-button"
+          data-modal-target="task-modal"
+          aria-haspopup="dialog"
+          aria-controls="task-modal"
+        >
+          + Tạo task
+        </button>
+        <input
+          type="text"
+          id="search-tasks"
+          placeholder="Tìm kiếm task…"
+          aria-label="Tìm kiếm task"
+        />
+        <fieldset
+          id="filter-tasks"
+          class="task-filters"
+          aria-describedby="filter-hint"
+        >
+          <legend>Lọc theo độ ưu tiên</legend>
+          <div class="filter-options">
+            <label
+              ><input type="checkbox" name="priority" value="HIGH" /> Cao</label
+            >
+            <label
+              ><input type="checkbox" name="priority" value="MEDIUM" /> Trung
+              bình</label
+            >
+            <label
+              ><input type="checkbox" name="priority" value="LOW" /> Thấp</label
+            >
+          </div>
+          <p id="filter-hint">
+            Có thể chọn nhiều mức. Không chọn mức nào sẽ hiển thị tất cả.
+          </p>
+        </fieldset>
+        <div class="task-sort">
+          <label for="completion-filter">Trạng thái</label>
+          <select id="completion-filter">
+            <option value="">Tất cả</option>
+            <option value="false">Chưa hoàn thành</option>
+            <option value="true">Đã hoàn thành</option>
+          </select>
+        </div>
+        <div class="task-sort">
+          <label for="sort-tasks">Sắp xếp</label>
+          <select id="sort-tasks">
+            <option value="priority">Độ ưu tiên</option>
+            <option value="createdAt">Mới nhất</option>
+            <option value="updatedAt">Cập nhật gần đây</option>
+            <option value="category">Theo category</option>
+          </select>
+        </div>
+
+        <fieldset>
+          <legend>Thứ tự</legend>
+          <label>
+            <input type="radio" name="sort-order" value="asc" />
+            Tăng dần
+          </label>
+          <label>
+            <input type="radio" name="sort-order" value="desc" checked />
+            Giảm dần
+          </label>
+        </fieldset>
+
+        <button id="clear-task-filters" type="button">Xóa bộ lọc</button>
+      </div>
+      <p id="page-status" class="success" role="status"></p>
+
+      <section aria-labelledby="task-heading">
+        <div class="section-header">
+          <h2 id="task-heading">Danh sách task</h2>
+          <button id="reload-tasks" type="button">Tải lại task</button>
+        </div>
+        <p id="task-list-error" class="error" role="alert"></p>
+        <ul id="task-list" aria-live="polite">
+          <li>Đang tải task…</li>
+        </ul>
+      </section>
+    </main>
+
+    <dialog id="category-modal" aria-labelledby="category-heading">
+      <div class="modal-header">
+        <h2 id="category-heading">Tạo category</h2>
+        <button
+          type="button"
+          class="close-button"
+          data-close-modal
+          aria-label="Đóng cửa sổ category"
+        >
+          ×
+        </button>
+      </div>
+      <form id="category-form" novalidate>
+        <label for="category-name">Tên category</label>
+        <input
+          id="category-name"
+          name="name"
+          required
+          autofocus
+          aria-describedby="category-error"
+        />
+        <p id="category-error" class="error" role="alert"></p>
+        <p class="success" role="status"></p>
+        <div class="modal-actions">
+          <button type="button" data-close-modal>Hủy</button>
+          <button type="submit" class="primary-button">Tạo category</button>
+        </div>
+      </form>
+      <div class="section-header category-list-heading">
+        <h3>Category hiện có</h3>
+        <button id="reload-categories" type="button">Tải lại</button>
+      </div>
+      <p id="category-list-error" class="error" role="alert"></p>
+      <ul id="category-list" aria-live="polite">
+        <li>Đang tải category…</li>
+      </ul>
+    </dialog>
+
+    <dialog id="task-modal" aria-labelledby="task-modal-heading">
+      <div class="modal-header">
+        <h2 id="task-modal-heading">Tạo task</h2>
+        <button
+          type="button"
+          class="close-button"
+          data-close-modal
+          aria-label="Đóng cửa sổ task"
+        >
+          ×
+        </button>
+      </div>
+      <p id="task-hint">
+        Category không bắt buộc. Bạn có thể tạo task mà không chọn category.
+      </p>
+      <button
+        type="button"
+        data-modal-target="category-modal"
+        aria-haspopup="dialog"
+        aria-controls="category-modal"
+      >
+        + Thêm category
+      </button>
+      <form id="task-form" novalidate>
+        <fieldset aria-describedby="task-hint task-error">
+          <legend>Thông tin task</legend>
+          <label for="task-category">Category (không bắt buộc)</label>
+          <select id="task-category" name="categoryId" autofocus>
+            <option value="">Không có category</option>
+          </select>
+          <label for="task-title">Tiêu đề</label>
+          <input id="task-title" name="title" required />
+          <label for="task-description">Mô tả</label>
+          <textarea
+            id="task-description"
+            name="description"
+            rows="3"
+            required
+          ></textarea>
+          <label for="task-priority">Độ ưu tiên</label>
+          <select id="task-priority" name="taskPriority">
+            <option value="HIGH">Cao</option>
+            <option value="MEDIUM" selected>Trung bình</option>
+            <option value="LOW">Thấp</option>
+          </select>
+          <button type="submit" class="primary-button">Tạo task</button>
+        </fieldset>
+        <p id="task-error" class="error" role="alert"></p>
+        <p class="success" role="status"></p>
+        <button type="button" data-close-modal>Hủy</button>
+      </form>
+    </dialog>
+
+    <script type="module" src="../js/pages/task.page.js"></script>
+  </body>
+</html>

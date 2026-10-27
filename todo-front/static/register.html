@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+    <link rel="stylesheet" href="../css/auth.css" />
+  </head>
+  <body>
+    <main>
+      <h1>THis is the register page</h1>
+      <form action="/register" method="POST" novalidate>
+        <div class="form-field">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required aria-describedby="username-error" />
+        <p id="username-error" class="validation-error" aria-live="polite"></p>
+        </div>
+
+        <div class="form-field">
+        <label for="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          required
+          aria-describedby="password-error"
+        />
+        <p id="password-error" class="validation-error" aria-live="polite"></p>
+        </div>
+
+        <button type="submit">Register</button>
+        <p id="form-error" class="validation-error" role="alert"></p>
+      </form>
+
+      <a href="./login.html">Already have an account? Login here</a>
+    </main>
+    <script type="module" src="../js/pages/register.page.js"></script>
+  </body>
+</html>
